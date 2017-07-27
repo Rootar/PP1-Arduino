@@ -43,7 +43,7 @@ bool L3G4200D::begin(l3g4200d_dps_t scale, l3g4200d_odrbw_t odrbw)
     t.ZAxis = 0;
     actualThreshold = 0;
 
-    Wire.begin();
+    Wire1.begin();
 
     // Check L3G4200D Who Am I Register
     if (fastRegister8(L3G4200D_REG_WHO_AM_I) != 0xD3)
@@ -182,15 +182,15 @@ void L3G4200D::setThreshold(uint8_t multiple)
 // Write 8-bit to register
 void L3G4200D::writeRegister8(uint8_t reg, uint8_t value)
 {
-    Wire.beginTransmission(L3G4200D_ADDRESS);
+    Wire1.beginTransmission(L3G4200D_ADDRESS);
     #if ARDUINO >= 100
-	Wire.write(reg);
-	Wire.write(value);
+	Wire1.write(reg);
+	Wire1.write(value);
     #else
-	Wire.send(reg);
-	Wire.send(value);
+	Wire1.send(reg);
+	Wire1.send(value);
     #endif
-    Wire.endTransmission();
+    Wire1.endTransmission();
 }
 
 // Fast read 8-bit from register
@@ -198,22 +198,22 @@ uint8_t L3G4200D::fastRegister8(uint8_t reg)
 {
     uint8_t value;
 
-    Wire.beginTransmission(L3G4200D_ADDRESS);
+    Wire1.beginTransmission(L3G4200D_ADDRESS);
     #if ARDUINO >= 100
-	Wire.write(reg);
+	Wire1.write(reg);
     #else
-	Wire.send(reg);
+	Wire1.send(reg);
     #endif
-    Wire.endTransmission();
+    Wire1.endTransmission();
 
-    Wire.beginTransmission(L3G4200D_ADDRESS);
-    Wire.requestFrom(L3G4200D_ADDRESS, 1);
+    Wire1.beginTransmission(L3G4200D_ADDRESS);
+    Wire1.requestFrom(L3G4200D_ADDRESS, 1);
     #if ARDUINO >= 100
-	value = Wire.read();
+	value = Wire1.read();
     #else
-	value = Wire.receive();
+	value = Wire1.receive();
     #endif;
-    Wire.endTransmission();
+    Wire1.endTransmission();
 
     return value;
 }
@@ -223,23 +223,23 @@ uint8_t L3G4200D::readRegister8(uint8_t reg)
 {
     uint8_t value;
 
-    Wire.beginTransmission(L3G4200D_ADDRESS);
+    Wire1.beginTransmission(L3G4200D_ADDRESS);
     #if ARDUINO >= 100
-	Wire.write(reg);
+	Wire1.write(reg);
     #else
-	Wire.send(reg);
+	Wire1.send(reg);
     #endif
-    Wire.endTransmission();
+    Wire1.endTransmission();
 
-    Wire.beginTransmission(L3G4200D_ADDRESS);
-    Wire.requestFrom(L3G4200D_ADDRESS, 1);
-    while(!Wire.available()) {};
+    Wire1.beginTransmission(L3G4200D_ADDRESS);
+    Wire1.requestFrom(L3G4200D_ADDRESS, 1);
+    while(!Wire1.available()) {};
     #if ARDUINO >= 100
-	value = Wire.read();
+	value = Wire1.read();
     #else
-	value = Wire.receive();
+	value = Wire1.receive();
     #endif;
-    Wire.endTransmission();
+    Wire1.endTransmission();
 
     return value;
 }
@@ -258,31 +258,31 @@ uint8_t L3G4200D::readTemperature(void)
 // Read raw values
 Vector L3G4200D::readRaw()
 {
-    Wire.beginTransmission(L3G4200D_ADDRESS);
+    Wire1.beginTransmission(L3G4200D_ADDRESS);
     #if ARDUINO >= 100
-	Wire.write(L3G4200D_REG_OUT_X_L | (1 << 7)); 
+	Wire1.write(L3G4200D_REG_OUT_X_L | (1 << 7)); 
     #else
-	Wire.send(L3G4200D_REG_OUT_X_L | (1 << 7)); 
+	Wire1.send(L3G4200D_REG_OUT_X_L | (1 << 7)); 
     #endif
-    Wire.endTransmission();
-    Wire.requestFrom(L3G4200D_ADDRESS, 6);
+    Wire1.endTransmission();
+    Wire1.requestFrom(L3G4200D_ADDRESS, 6);
 
-    while (Wire.available() < 6);
+    while (Wire1.available() < 6);
 
     #if ARDUINO >= 100
-	uint8_t xla = Wire.read();
-	uint8_t xha = Wire.read();
-	uint8_t yla = Wire.read();
-	uint8_t yha = Wire.read();
-	uint8_t zla = Wire.read();
-	uint8_t zha = Wire.read();
+	uint8_t xla = Wire1.read();
+	uint8_t xha = Wire1.read();
+	uint8_t yla = Wire1.read();
+	uint8_t yha = Wire1.read();
+	uint8_t zla = Wire1.read();
+	uint8_t zha = Wire1.read();
     #else
-	uint8_t xla = Wire.receive();
-	uint8_t xha = Wire.receive();
-	uint8_t yla = Wire.receive();
-	uint8_t yha = Wire.receive();
-	uint8_t zla = Wire.receive();
-	uint8_t zha = Wire.receive();
+	uint8_t xla = Wire1.receive();
+	uint8_t xha = Wire1.receive();
+	uint8_t yla = Wire1.receive();
+	uint8_t yha = Wire1.receive();
+	uint8_t zla = Wire1.receive();
+	uint8_t zha = Wire1.receive();
     #endif
 
     r.XAxis = xha << 8 | xla;

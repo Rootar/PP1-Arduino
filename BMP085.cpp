@@ -32,13 +32,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Wire.h>
 #include <math.h>
-#include <util/delay.h>
 
 #include <BMP085.h>
 
 bool BMP085::begin(bmp085_oss_t oversampling)
 {
-    Wire.begin();
+    Wire1.begin();
 
     // Check BMP085 REG CHIP_ID
     if (fastRegister8(BMP085_REG_CHIP_ID) != 0x55)
@@ -122,7 +121,7 @@ uint16_t BMP085::readRawTemperature(void)
 {
     writeRegister8(BMP085_REG_CONTROL, BMP085_CMD_MEASURE_TEMP);
 
-    _delay_ms(5); // wait 4.5ms
+    delay(5); // wait 4.5ms
 
     return readRegister16(BMP085_REG_DATA);
 }
@@ -163,20 +162,15 @@ uint32_t BMP085::readRawPressure(bool rawRegister)
     writeRegister8(BMP085_REG_CONTROL, BMP085_CMD_MEASURE_PRESSURE_0 + (oss << 6));
 
     if (oss == BMP085_ULTRA_LOW_POWER)
-    {
-	_delay_ms(5);
-    } else
-    if (oss == BMP085_STANDARD)
-    {
-	_delay_ms(8);
-    } else
-    if (oss == BMP085_HIGH_RES)
-    {
-	_delay_ms(14);
-    } else
-    {
-	_delay_ms(26);
-    }
+		delay(5);
+    else
+		if (oss == BMP085_STANDARD)
+			delay(8);
+		else
+			if (oss == BMP085_HIGH_RES)
+				delay(14);
+			else
+				delay(26);
 
     value = readRegister16(BMP085_REG_DATA);
     value <<= 8;
@@ -309,15 +303,15 @@ uint16_t BMP085::getVersion()
 // Write 8-bit to register
 void BMP085::writeRegister8(uint8_t reg, uint8_t value)
 {
-    Wire.beginTransmission(BMP085_ADDRESS);
+    Wire1.beginTransmission(BMP085_ADDRESS);
     #if ARDUINO >= 100
-	Wire.write(reg);
-	Wire.write(value);
+	Wire1.write(reg);
+	Wire1.write(value);
     #else
-	Wire.send(reg);
-	Wire.send(value);
+	Wire1.send(reg);
+	Wire1.send(value);
     #endif
-    Wire.endTransmission();
+    Wire1.endTransmission();
 }
 
 // Fast read 8-bit from register
@@ -325,22 +319,22 @@ uint8_t BMP085::fastRegister8(uint8_t reg)
 {
     uint8_t value;
 
-    Wire.beginTransmission(BMP085_ADDRESS);
+    Wire1.beginTransmission(BMP085_ADDRESS);
     #if ARDUINO >= 100
-	Wire.write(reg);
+	Wire1.write(reg);
     #else
-	Wire.send(reg);
+	Wire1.send(reg);
     #endif
-    Wire.endTransmission();
+    Wire1.endTransmission();
 
-    Wire.beginTransmission(BMP085_ADDRESS);
-    Wire.requestFrom(BMP085_ADDRESS, 1);
+    Wire1.beginTransmission(BMP085_ADDRESS);
+    Wire1.requestFrom(BMP085_ADDRESS, 1);
     #if ARDUINO >= 100
-	value = Wire.read();
+	value = Wire1.read();
     #else
-	value = Wire.receive();
+	value = Wire1.receive();
     #endif;
-    Wire.endTransmission();
+    Wire1.endTransmission();
 
     return value;
 }
@@ -350,23 +344,23 @@ uint8_t BMP085::readRegister8(uint8_t reg)
 {
     uint8_t value;
 
-    Wire.beginTransmission(BMP085_ADDRESS);
+    Wire1.beginTransmission(BMP085_ADDRESS);
     #if ARDUINO >= 100
-	Wire.write(reg);
+	Wire1.write(reg);
     #else
-	Wire.send(reg);
+	Wire1.send(reg);
     #endif
-    Wire.endTransmission();
+    Wire1.endTransmission();
 
-    Wire.beginTransmission(BMP085_ADDRESS);
-    Wire.requestFrom(BMP085_ADDRESS, 1);
-    while(!Wire.available()) {};
+    Wire1.beginTransmission(BMP085_ADDRESS);
+    Wire1.requestFrom(BMP085_ADDRESS, 1);
+    while(!Wire1.available()) {};
     #if ARDUINO >= 100
-	value = Wire.read();
+	value = Wire1.read();
     #else
-	value = Wire.receive();
+	value = Wire1.receive();
     #endif;
-    Wire.endTransmission();
+    Wire1.endTransmission();
 
     return value;
 }
@@ -375,25 +369,25 @@ uint8_t BMP085::readRegister8(uint8_t reg)
 uint16_t BMP085::readRegister16(uint8_t reg)
 {
     uint16_t value;
-    Wire.beginTransmission(BMP085_ADDRESS);
+    Wire1.beginTransmission(BMP085_ADDRESS);
     #if ARDUINO >= 100
-        Wire.write(reg);
+        Wire1.write(reg);
     #else
-        Wire.send(reg);
+        Wire1.send(reg);
     #endif
-    Wire.endTransmission();
+    Wire1.endTransmission();
 
-    Wire.beginTransmission(BMP085_ADDRESS);
-    Wire.requestFrom(BMP085_ADDRESS, 2);
-    while(!Wire.available()) {};
+    Wire1.beginTransmission(BMP085_ADDRESS);
+    Wire1.requestFrom(BMP085_ADDRESS, 2);
+    while(!Wire1.available()) {};
     #if ARDUINO >= 100
-        uint8_t vha = Wire.read();
-        uint8_t vla = Wire.read();
+        uint8_t vha = Wire1.read();
+        uint8_t vla = Wire1.read();
     #else
-        uint8_t vha = Wire.receive();
-        uint8_t vla = Wire.receive();
+        uint8_t vha = Wire1.receive();
+        uint8_t vla = Wire1.receive();
     #endif;
-    Wire.endTransmission();
+    Wire1.endTransmission();
 
     value = vha << 8 | vla;
 

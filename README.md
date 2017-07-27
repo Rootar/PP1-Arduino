@@ -1,5 +1,13 @@
-# PP1-Arduino
-PP1 - Arduino
+# Podstawy Programowania 1 - Arduino
+Biblioteki do płytki edukacyjnej, opartej na Arduino DUE.
+
+Kod biblioteki wykorzystuje:
+
+ADXL345 (http://www.jarzebski.pl/)
+BMP180 (http://www.jarzebski.pl/)
+HMC5883L (http://www.jarzebski.pl/)
+L3G4200D (http://www.jarzebski.pl/)
+
 
 Arduino-ADXL345
 ===============
@@ -40,4 +48,28 @@ Read more
 ---------
 
 http://www.jarzebski.pl/arduino/czujniki-i-sensory/czujniki-cisnienia-bmp085-bmp180.html
+
+Arduino-HMC5883L
+================
+
+HMC5883L Triple Axis Digital Compass Arduino Library
+
+![HMC5883L Processing](http://www.jarzebski.pl/media/big/publish/2014/01/hmc5883l-processing.png "HMC5883L Processing")
+
+Tutorials: http://www.jarzebski.pl/arduino/czujniki-i-sensory/3-osiowy-magnetometr-hmc5883l.html
+
+YouTube: http://www.youtube.com/watch?v=zG3uzQW3wc0
+
+This library use I2C to communicate, 2 pins are required to interface.
+
+Arduino-L3G4200D
+================
+
+L3G4200D Triple Axis Gyroscope Arduino Library.
+
+Tutorials: http://www.jarzebski.pl/arduino/czujniki-i-sensory/3-osiowy-zyroskop-l3g4200d.html
+
+YouTube: http://youtu.be/8llVF22r9yA
+
+This library use I2C to communicate, 2 pins are required to interface
 

@@ -4,7 +4,7 @@ Biblioteki do płytki edukacyjnej, opartej na Arduino DUE.
 Kod biblioteki wykorzystuje:
 
 * ADXL345 (https://github.com/jarzebski/Arduino-ADXL345)
-* BMP180 (https://github.com/jarzebski/Arduino-BMP180)
+* BMP180 (https://github.com/jarzebski/Arduino-BMP085-BMP180)
 * HMC5883L (https://github.com/jarzebski/Arduino-HMC5883L)
 * L3G4200D (https://github.com/jarzebski/Arduino-L3G4200D)
 
